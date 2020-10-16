@@ -8,8 +8,8 @@ Description: we propose a Bayesian varying coefficient model  allowing, in a sin
 License: GPL-3
 Encoding: UTF-8
 LazyData: true
-URL: 
-BugReports: 
+URL: https://github.com/Heuclin/VCGSS
+BugReports: https://github.com/Heuclin/VCGSS/issues
 Imports: 
 	Rcpp (>= 1.0.4.6),
 	stringr,

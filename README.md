@@ -4,6 +4,14 @@
 Benjamin Heuclin, Frédéric Mortier, Catherine Trottier, Marie Denis
 
 
+## Installation in R
+
+``` r
+library(devtools)
+devtools::install_github("Heuclin/VCGSS")
+```
+
+
 ## Exemple on simulated dataset
 
 ### Data simulation 
