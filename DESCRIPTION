@@ -4,12 +4,12 @@ Title: Bayesian varying coefficient model with selection using group spike-and-s
 Version: 0.1.0
 Author: B. Heuclin, F. Mortier, C. Trottier, M. Denis
 Maintainer: The package maintainer <benjamin.heuclin@gmail.com>
-Description: we propose a Bayesian varying coefficient model  allowing, in a single step, the identification of variables involved in the variability of numerical response variable and the estimation of their dynamic effects. Selection is achieve using group spike-and-slab priors with either  P-spline interpolation  or  non-functional techniques to model the dynamic effects. This work is related to the paper: Bayesian varying coefficient model with selection: An application to functional mapping, B. Heuclin, F. Mortier, C. Trottier and M. Denis, JRSS-C, 2020.
+Description: We propose a Bayesian varying coefficient model  allowing, in a single step, the identification of variables involved in the variability of numerical response variable and the estimation of their dynamic effects. Selection is achieve using group spike-and-slab priors with either  P-spline interpolation  or  non-functional techniques to model the dynamic effects. This work is related to the paper: Bayesian varying coefficient model with selection: An application to functional mapping, B. Heuclin, F. Mortier, C. Trottier and M. Denis, JRSS-C, 2020.
 License: GPL-3
 Encoding: UTF-8
 LazyData: true
-URL: 
-BugReports: 
+URL: https://github.com/Heuclin/VCGSS
+BugReports: https://github.com/Heuclin/VCGSS/issues
 Imports: 
 	Rcpp (>= 1.0.4.6),
 	stringr,
