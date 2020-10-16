@@ -1,20 +1,18 @@
----
-title: "Bayesian varying coefficient model with selection: an application to functional mapping"
-author: "B. Heuclin, F. Mortier, C. Trottier, M. Denis"
-date: "14/10/2020"
-output:
-   html_document:
-    number_sections: yes
-    toc: yes
----
 
 
+# Bayesian varying coefficient model with selection: an application to functional mapping
+
+B. Heuclin, F. Mortier, C. Trottier, M. Denis
+
+14/10/2020
+
+![](logo.png)
 
 We propose a Bayesian varying coefficient model  allowing, in a single step, the identification of variables involved in the variability of numerical response variable and the estimation of their dynamic effects. Selection is achieve using group spike-and-slab priors with either  P-spline interpolation  or  non-functional techniques to model the dynamic effects. This work is related to the paper: Bayesian varying coefficient model with selection: An application to functional mapping, B. Heuclin, F. Mortier, C. Trottier and M. Denis, Journal of the Royal Statistical Society: Series C (Applied Statistics), 2020,  DOI: 10.1111/rssc.12447
 
 
 
-# Installation in R
+## Installation in R
 
 ``` r
 library(devtools)
@@ -22,9 +20,9 @@ devtools::install_github("Heuclin/VCGSS")
 ```
 
 
-# Exemple on simulated dataset
+## Exemple on simulated dataset
 
-## Data simulation 
+### Data simulation 
 ```{r}
 n <- 200                      # number of individuals
 q <- 50                       # number of variables
@@ -93,16 +91,16 @@ envv <- matrix(sim$env, ncol = 1)
 ```
 
 
-## Fit the varying coefficient model with spike-and-slab prior for variable selection with the main function `VCM_fct` 
+### Fit the varying coefficient model with spike-and-slab prior for variable selection with the main function `VCM_fct` 
 ```{r}
 library(VCGSS)
 
 fit <- VCM_fct(Y, X, ENV = envv, selection = TRUE, core = -1, rep = 6, niter = 10000, burnin = 5000)
 ```
 
-## Check the MCMC convergence
+### Check the MCMC convergence
 
-### Gelman-Rubin's diagnostics 
+#### Gelman-Rubin's diagnostics 
 
 By default the `VCM_fct` function provides Gelman Rubins diagnostic.
 
@@ -121,14 +119,14 @@ plot(fit$gelman.diag.b.psrf.median); abline(1.1, 0, col=2)
 
 ```
 
-### Traceplot
+#### Traceplot
 
 ```{r}
 # traceplot
 coda::plot(fit$mcmc_list)
 ```
 
-### Visual convergence diagnostic of gamma (probabilities of variable inclusion)
+#### Visual convergence diagnostic of gamma (probabilities of variable inclusion)
 
 ```{r}
 plot_diagnostic_gamma(fit)
@@ -136,7 +134,7 @@ plot_diagnostic_gamma(fit)
 
 
 
-## Parameter estimation
+### Parameter estimation
 `fit$estimation` contains the estimations of different parameters 
 
 ```{r}
@@ -165,18 +163,18 @@ fit$estimation$curve_env
 fit$estimation$curve_beta  
 ```
 
-### Visualisation of the marginal posterior probabilities of variable inclusion 
+#### Visualisation of the marginal posterior probabilities of variable inclusion 
 
 ```{r}
 prob <- fit$estimation$mean.marginal.probabilities
 plot(prob, ylim = c(0, 1))
 ```
 
-### Visualisation of the estimated dinamic effects over time
+#### Visualisation of the estimated dinamic effects over time
 
 ```{r}
 plot_curve(fit, plot=c("Y", "mu", "beta"), mfrow = c(2, 3), add = c("matplot", "quantile"))
 ```
 
-![](logo.png)
+
 
