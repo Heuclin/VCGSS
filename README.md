@@ -10,8 +10,6 @@ output:
 
 
 
-
-
 We propose a Bayesian varying coefficient model  allowing, in a single step, the identification of variables involved in the variability of numerical response variable and the estimation of their dynamic effects. Selection is achieve using group spike-and-slab priors with either  P-spline interpolation  or  non-functional techniques to model the dynamic effects. This work is related to the paper: Bayesian varying coefficient model with selection: An application to functional mapping, B. Heuclin, F. Mortier, C. Trottier and M. Denis, Journal of the Royal Statistical Society: Series C (Applied Statistics), 2020,  DOI: 10.1111/rssc.12447
 
 
