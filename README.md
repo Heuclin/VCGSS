@@ -46,12 +46,11 @@ sim$beta <- matrix(0, T, q)
 sim$beta[, 1] <- 4 + cumsum(rnorm(T, 0, 2))
 sim$beta[, 2] <- 2*cos(pi * (1:T-25)/15)+1:T/50
 sim$beta[, 3] <- c(rep(2, round(T/3)), rep(0, round(T/3)), rep(1, T-2*round(T/3)))
-sim$beta[3, 3] <- 15
 sim$beta[, 4] <- 2*60 / (25 + (1:T - T/2)^2)
 
 # plot variable effects over time
 par(mfrow = c(4,1), mar=c(2, 4,0.5, 1))
-for(j in 1:4) plot(sim$beta[, j], col = 2)
+for(j in 1:4) {plot(sim$beta[, j], ylab = paste0("beta_", j)); lines(sim$beta[, j]); abline(0, 0, lty = 2)}
 
 
 # one environmental variable 
@@ -62,10 +61,11 @@ sim$f_env <- sim$env*0.5 + sim$env^2 *0.3
 
 # plot the additive part (intercept over time + environment effect)
 par(mfrow= c(4, 1), mar = c(1, 4, 1, 1))
-plot(sim$mu, t='l'); abline(0, 0)
-plot(sim$env, t='l'); abline(0, 0)
-plot(sim$f_env, t='l'); abline(0, 0)
-plot(sim$mu + sim$f_env, t='l'); abline(0, 0)
+plot(sim$mu); lines(sim$mu); abline(0, 0, lty = 2)
+plot(sim$env); lines(sim$env); abline(0, 0, lty = 2)
+plot(sim$f_env); lines(sim$f_env); abline(0, 0, lty = 2)
+plot(sim$mu + sim$f_env); lines(sim$mu + sim$f_env); abline(0, 0, lty = 2)
+
 
 
 sim$rho <-  rho
@@ -84,7 +84,9 @@ for(i in 1:n){
 }
 
 # plot response variable over time 
-matplot(Y, t='l')
+par(mfrow= c(1, 1), mar = c(4, 4, 4, 1))
+matplot(t(Y), t='l', main = "matplot of Y", xlab = "time", ylab = "")
+
 
 sim$f_env1 <- sim$f_env
 envv <- matrix(sim$env, ncol = 1)
@@ -124,7 +126,7 @@ plot(fit$gelman.diag.b.psrf.median); abline(1.1, 0, col=2)
 
 ```{r}
 # traceplot
-coda::plot(fit$mcmc_list)
+plot(fit$mcmc_list)
 ```
 
 #### Visual diagnostic of convergence ofmarginal posterior probabilities of variable inclusion (gamma parameters)

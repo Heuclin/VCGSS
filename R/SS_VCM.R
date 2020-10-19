@@ -7,14 +7,14 @@
 # 
 #____________________________________________________________________________________________________________________
 
-# require(stringr)
-require(mvnfast)
-require(splines)
-require(doParallel)
-require(coda)
-require(stringr)
-require(rlang)
-require(utils)
+
+library(mvnfast)
+library(splines)
+library(doParallel)
+library(coda)
+library(stringr)
+library(rlang)
+library(utils)
 
 
 
@@ -25,7 +25,7 @@ legendre_polynome <- function(n, t){
 }
 
 
-mode <- function(x) stat::density(x)$x[which.max(stat::density(x)$y)]
+mode <- function(x) stats::density(x)$x[which.max(stats::density(x)$y)]
 
 
 prob_jointe <- function(tab, start, end){
@@ -77,18 +77,28 @@ ss_vcm <- function(Y, X, settings, init, selection = TRUE, var_gp = "global")
 #' @param scale boolean, indicating if X should be scaled, the default is TRUE
 #' @param estimation boolean, indicating summary of MCMC chains should be apply to provide estimation of parameters and curve, the default is TRUE
 #' @param gelman.diag boolean, indicating gelman.diag should be apply on MCMC chains, the default is TRUE
+#' @param gelman.plot boolean indicating if the gelman plot should be plotted, the default is FALSE
+#' @param traceplot boolean indicating if the trace plot should be plotted, the default is FALSE
 #' @param ... additional arguments 
 #'
 #' @return Return a list
 #' @export
 #'
-#' @examples
+#' @examples # R/example_1.R
 VCM_fct <- function(Y, X, ENV = NULL, selection = TRUE, interpolation='P-spline', df = floor(ncol(Y)/3)+3,  
                     order_diff = 2, niter = 10000, burnin = 5000, thin = 10,
                     rep = 1, cores = -1, save = TRUE, path = NULL, 
                     summary.fct = mean,  scale = FALSE, estimation = TRUE, 
-                    gelman.diag = TRUE) #,  rm_old_chain = TRUE, ...)
+                    gelman.diag = TRUE, gelman.plot=FALSE, traceplot=FALSE) #,  rm_old_chain = TRUE, ...)
 {
+  
+  require(mvnfast)
+  require(splines)
+  require(doParallel)
+  require(coda)
+  require(stringr)
+  require(rlang)
+  require(utils)
   
   if(!interpolation %in% c('Legendre', 'B-spline', 'P-spline', 'RW')) stop("interpolation must be in the list : 'Legendre', 'B-spline', 'P-spline', 'RW'!")
   
@@ -228,6 +238,7 @@ VCM_fct <- function(Y, X, ENV = NULL, selection = TRUE, interpolation='P-spline'
   
   settings$epsilon = 1e-5
   
+  output$settings <- settings
   
   # MCMC _____________________________________________________________________________
   print("MCMC sampler")
@@ -236,13 +247,13 @@ VCM_fct <- function(Y, X, ENV = NULL, selection = TRUE, interpolation='P-spline'
   
   list_chain <- foreach::foreach(k = 1:nrow(pars), .verbose = FALSE) %dopar% {
     init <- list()
-    init$alpha <- stat::rnorm(1, 0, 3)
-    init$pi = stat::runif(1, 0.001, 0.99)
-    init$m <- stat::rnorm(settings$l-1, 0, 1)
+    init$alpha <- stats::rnorm(1, 0, 3)
+    init$pi = stats::runif(1, 0.001, 0.99)
+    init$m <- stats::rnorm(settings$l-1, 0, 1)
     init$e <- matrix(0, settings$l-1, settings$n_env)
-    init$b <- matrix(stat::rnorm( ncol(settings$B)*q, 0, 1), ncol(settings$B), q)
-    init$rho <- stat::runif(1, 0.001, 0.99)            # rho, parametre auto-regressif sur la matrice de variance residuelle
-    init$se2 <- abs(stat::rnorm(1, 1, 3))		           # sigma^2, variance residuelle, scalaire
+    init$b <- matrix(stats::rnorm( ncol(settings$B)*q, 0, 1), ncol(settings$B), q)
+    init$rho <- stats::runif(1, 0.001, 0.99)            # rho, parametre auto-regressif sur la matrice de variance residuelle
+    init$se2 <- abs(stats::rnorm(1, 1, 3))		           # sigma^2, variance residuelle, scalaire
     init$g <- rep(1, q) # sample(0:1, q, replace = TRUE);       # parametre gamma pour le Spike and Slab
     init$tau2 <- rep(100, q)    # tau2, parametres de groupe lasso, vecteur de longueur q
     init$tau0 <- 100
@@ -263,7 +274,13 @@ VCM_fct <- function(Y, X, ENV = NULL, selection = TRUE, interpolation='P-spline'
     # init$tau0_e <- rep(100, settings$n_env)
     # init$xi <- matrix(1, nrow(settings$D), q)
     
-    chain <- ss_vcm(Y = Y, X = X, settings = settings, init = init, selection = selection)
+    # chain <- ss_vcm(Y = Y, X = X, settings = settings, init = init, selection = selection)
+    
+    if(selection){
+      chain <- ss_vcm_cpp(as.matrix(Y), as.matrix(X), as.list(settings), as.list(init), var_gp = "global")
+    }else{
+      chain <- vcm_cpp(as.matrix(Y), as.matrix(X), as.list(settings), as.list(init), var_gp = "global")
+    }
     
     if(save) save(chain, settings, init, file = paste0(path, "/chain_rep_", k, ".Rdata"))
     
@@ -274,11 +291,13 @@ VCM_fct <- function(Y, X, ENV = NULL, selection = TRUE, interpolation='P-spline'
   if(save) save(output, file = paste0(path, "/output.Rdata"))
   
   # Estimation _____________________________________________________________________________
-  if(estimation) output <- estimation.VCM(output)
-  if(save) save(output, file = paste0(path, "/output.Rdata"))
+  if(estimation){
+    output <- estimation.VCM(output)
+    if(save) save(output, file = paste0(path, "/output.Rdata"))
+  }
   
   # Gelman diag _____________________________________________________________________________
-  if(rep>1 & gelman.diag) output <- gelman.diag.VCM(output) else output$gelman.diag <- NULL
+  if(rep>1 & gelman.diag) output <- gelman.diag.VCM(output, gelman.plot = gelman.plot, traceplot = traceplot) else output$gelman.diag <- NULL
   if(save) save(output, file = paste0(path, "/output.Rdata"))
   
   
@@ -310,6 +329,7 @@ VCM_fct <- function(Y, X, ENV = NULL, selection = TRUE, interpolation='P-spline'
 #'
 #' @examples
 gelman.diag.VCM <- function(object, gelman.plot = FALSE, traceplot = FALSE){
+  require(coda)
   
   rep <- object$parameters$rep
   df_beta <- object$parameters$df_beta
@@ -349,7 +369,7 @@ gelman.diag.VCM <- function(object, gelman.plot = FALSE, traceplot = FALSE){
   print("mpsrf:")
   print(object$gelman.diag$mpsrf)
   if(gelman.plot) coda::gelman.plot(object$mcmc_list)
-  if(traceplot) coda::plot(object$mcmc_list)
+  if(traceplot) plot(object$mcmc_list)
   
   # graphics::par(mfrow = c(1, 1), mar = c(4, 4, 1, 1))
   # graphics::matplot(apply(g, 1, cumsum)/ 1:rep, t="l", lty = 1, lwd = 2, xlab = "number of repetitions", ylab = "average marg. prob.", ylim = c(0, 1))
@@ -365,7 +385,7 @@ gelman.diag.VCM <- function(object, gelman.plot = FALSE, traceplot = FALSE){
     }
   }
   object$gelman.diag.b.psrf <- round(gelman_diag_b, 2)
-  object$gelman.diag.b.psrf.median <- round(apply(gelman_diag_b , 1, stat::median, na.rm = TRUE), 2)
+  object$gelman.diag.b.psrf.median <- round(apply(gelman_diag_b , 1, stats::median, na.rm = TRUE), 2)
   tmp <- object$gelman.diag.b.psrf.median
   if(sum(!is.na(tmp))) graphics::plot(object$gelman.diag.b.psrf.median, ylab = "median of psrf", xlab = "variables", main = "psrf of parameters 'b'"); graphics::abline(1.1, 0, col = 2)
   return(object)
@@ -387,6 +407,7 @@ gelman.diag.VCM <- function(object, gelman.plot = FALSE, traceplot = FALSE){
 #'
 #' @examples
 estimation.VCM <- function(object){
+  require(stringr)
   
   print("Summary")
   
@@ -420,7 +441,11 @@ estimation.VCM <- function(object){
   i=1
   for(i in 1:rep){ # length(list_chain)){
     # print(i)
-    load(paste0(path, "/chain_rep_", i, ".Rdata"))
+    if(!object$parameters$save ){
+      chain <- object$list_chain[[i]]
+    }else{
+      load(paste0(path, "/chain_rep_", i, ".Rdata"))
+    }
     g <- cbind(g, colMeans(chain$g))
     res_selec_mar[i, which(colMeans(chain$g[, ])>0.5)] <- 1
     proba.g.jointe <- sort(table(apply(chain$g[, 1:q], 1,
@@ -489,7 +514,8 @@ estimation.VCM <- function(object){
 #' @return 
 #' @export
 #'
-#' @examples
+#' @example R/example_1.R
+#' 
 plot_functional_effects <- function(object, mfrow = c(6, 7), mar = c(1, 1, 4, 1), plot = c("Y", "mu", "env", "beta"), 
                        id = which(object$estimation$mean.marginal.probabilities > 0.5), add = c("quantile", "matplot"),
                        name = NULL)
@@ -561,7 +587,8 @@ plot_functional_effects <- function(object, mfrow = c(6, 7), mar = c(1, 1, 4, 1)
 #' @return none
 #' @export
 #'
-#' @examples
+#' @example R/example_1.R
+#' 
 plot_diagnostic_gamma <- function(object){
   rep <- object$parameters$rep
   g <- object$estimation$marginal.probabilities

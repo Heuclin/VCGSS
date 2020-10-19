@@ -35,3 +35,6 @@ plot_functional_effects(
 \description{
 Function to plot the estimated functional effects
 }
+\examples{
+R/exemple_1.R
+}
