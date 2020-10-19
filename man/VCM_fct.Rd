@@ -22,7 +22,9 @@ VCM_fct(
   summary.fct = mean,
   scale = FALSE,
   estimation = TRUE,
-  gelman.diag = TRUE
+  gelman.diag = TRUE,
+  gelman.plot = FALSE,
+  traceplot = FALSE
 )
 }
 \arguments{
@@ -62,6 +64,10 @@ VCM_fct(
 
 \item{gelman.diag}{boolean, indicating gelman.diag should be apply on MCMC chains, the default is TRUE}
 
+\item{gelman.plot}{boolean indicating if the gelman plot should be plotted, the default is FALSE}
+
+\item{traceplot}{boolean indicating if the trace plot should be plotted, the default is FALSE}
+
 \item{...}{additional arguments}
 }
 \value{
@@ -69,4 +75,7 @@ Return a list
 }
 \description{
 Main function to run the Bayesian varying coefficient model using spike-and-slab prior for variable selection
+}
+\examples{
+# R/exemple_1.R
 }

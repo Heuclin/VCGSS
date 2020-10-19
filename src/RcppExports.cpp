@@ -93,6 +93,90 @@ BEGIN_RCPP
     return rcpp_result_gen;
 END_RCPP
 }
+// gl_vcm_cpp
+List gl_vcm_cpp(arma::mat Y, arma::mat X, List settings, List init);
+RcppExport SEXP _VCGSS_gl_vcm_cpp(SEXP YSEXP, SEXP XSEXP, SEXP settingsSEXP, SEXP initSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< arma::mat >::type Y(YSEXP);
+    Rcpp::traits::input_parameter< arma::mat >::type X(XSEXP);
+    Rcpp::traits::input_parameter< List >::type settings(settingsSEXP);
+    Rcpp::traits::input_parameter< List >::type init(initSEXP);
+    rcpp_result_gen = Rcpp::wrap(gl_vcm_cpp(Y, X, settings, init));
+    return rcpp_result_gen;
+END_RCPP
+}
+// sample_int
+Rcpp::IntegerVector sample_int(int n, int min, int max);
+RcppExport SEXP _VCGSS_sample_int(SEXP nSEXP, SEXP minSEXP, SEXP maxSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< int >::type n(nSEXP);
+    Rcpp::traits::input_parameter< int >::type min(minSEXP);
+    Rcpp::traits::input_parameter< int >::type max(maxSEXP);
+    rcpp_result_gen = Rcpp::wrap(sample_int(n, min, max));
+    return rcpp_result_gen;
+END_RCPP
+}
+// sumlogs
+double sumlogs(double a, double b);
+RcppExport SEXP _VCGSS_sumlogs(SEXP aSEXP, SEXP bSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< double >::type a(aSEXP);
+    Rcpp::traits::input_parameter< double >::type b(bSEXP);
+    rcpp_result_gen = Rcpp::wrap(sumlogs(a, b));
+    return rcpp_result_gen;
+END_RCPP
+}
+// ss_vcm_cpp
+List ss_vcm_cpp(arma::mat Y, arma::mat X, List settings, List init, std::string var_gp);
+RcppExport SEXP _VCGSS_ss_vcm_cpp(SEXP YSEXP, SEXP XSEXP, SEXP settingsSEXP, SEXP initSEXP, SEXP var_gpSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< arma::mat >::type Y(YSEXP);
+    Rcpp::traits::input_parameter< arma::mat >::type X(XSEXP);
+    Rcpp::traits::input_parameter< List >::type settings(settingsSEXP);
+    Rcpp::traits::input_parameter< List >::type init(initSEXP);
+    Rcpp::traits::input_parameter< std::string >::type var_gp(var_gpSEXP);
+    rcpp_result_gen = Rcpp::wrap(ss_vcm_cpp(Y, X, settings, init, var_gp));
+    return rcpp_result_gen;
+END_RCPP
+}
+// ss_vcm_without_rho_cpp
+List ss_vcm_without_rho_cpp(arma::mat Y, arma::mat X, List settings, List init, std::string var_gp);
+RcppExport SEXP _VCGSS_ss_vcm_without_rho_cpp(SEXP YSEXP, SEXP XSEXP, SEXP settingsSEXP, SEXP initSEXP, SEXP var_gpSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< arma::mat >::type Y(YSEXP);
+    Rcpp::traits::input_parameter< arma::mat >::type X(XSEXP);
+    Rcpp::traits::input_parameter< List >::type settings(settingsSEXP);
+    Rcpp::traits::input_parameter< List >::type init(initSEXP);
+    Rcpp::traits::input_parameter< std::string >::type var_gp(var_gpSEXP);
+    rcpp_result_gen = Rcpp::wrap(ss_vcm_without_rho_cpp(Y, X, settings, init, var_gp));
+    return rcpp_result_gen;
+END_RCPP
+}
+// vcm_cpp
+List vcm_cpp(arma::mat Y, arma::mat X, List settings, List init, std::string var_gp);
+RcppExport SEXP _VCGSS_vcm_cpp(SEXP YSEXP, SEXP XSEXP, SEXP settingsSEXP, SEXP initSEXP, SEXP var_gpSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< arma::mat >::type Y(YSEXP);
+    Rcpp::traits::input_parameter< arma::mat >::type X(XSEXP);
+    Rcpp::traits::input_parameter< List >::type settings(settingsSEXP);
+    Rcpp::traits::input_parameter< List >::type init(initSEXP);
+    Rcpp::traits::input_parameter< std::string >::type var_gp(var_gpSEXP);
+    rcpp_result_gen = Rcpp::wrap(vcm_cpp(Y, X, settings, init, var_gp));
+    return rcpp_result_gen;
+END_RCPP
+}
 
 static const R_CallMethodDef CallEntries[] = {
     {"_VCGSS_my_sample", (DL_FUNC) &_VCGSS_my_sample, 2},
@@ -102,6 +186,12 @@ static const R_CallMethodDef CallEntries[] = {
     {"_VCGSS_rmnorm", (DL_FUNC) &_VCGSS_rmnorm, 2},
     {"_VCGSS_rmnorm_svd", (DL_FUNC) &_VCGSS_rmnorm_svd, 4},
     {"_VCGSS_rmnorm_svd2", (DL_FUNC) &_VCGSS_rmnorm_svd2, 3},
+    {"_VCGSS_gl_vcm_cpp", (DL_FUNC) &_VCGSS_gl_vcm_cpp, 4},
+    {"_VCGSS_sample_int", (DL_FUNC) &_VCGSS_sample_int, 3},
+    {"_VCGSS_sumlogs", (DL_FUNC) &_VCGSS_sumlogs, 2},
+    {"_VCGSS_ss_vcm_cpp", (DL_FUNC) &_VCGSS_ss_vcm_cpp, 5},
+    {"_VCGSS_ss_vcm_without_rho_cpp", (DL_FUNC) &_VCGSS_ss_vcm_without_rho_cpp, 5},
+    {"_VCGSS_vcm_cpp", (DL_FUNC) &_VCGSS_vcm_cpp, 5},
     {NULL, NULL, 0}
 };
 

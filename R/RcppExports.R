@@ -29,3 +29,27 @@ rmnorm_svd2 <- function(mean, V, s) {
     .Call(`_VCGSS_rmnorm_svd2`, mean, V, s)
 }
 
+gl_vcm_cpp <- function(Y, X, settings, init) {
+    .Call(`_VCGSS_gl_vcm_cpp`, Y, X, settings, init)
+}
+
+sample_int <- function(n, min, max) {
+    .Call(`_VCGSS_sample_int`, n, min, max)
+}
+
+sumlogs <- function(a, b) {
+    .Call(`_VCGSS_sumlogs`, a, b)
+}
+
+ss_vcm_cpp <- function(Y, X, settings, init, var_gp) {
+    .Call(`_VCGSS_ss_vcm_cpp`, Y, X, settings, init, var_gp)
+}
+
+ss_vcm_without_rho_cpp <- function(Y, X, settings, init, var_gp) {
+    .Call(`_VCGSS_ss_vcm_without_rho_cpp`, Y, X, settings, init, var_gp)
+}
+
+vcm_cpp <- function(Y, X, settings, init, var_gp) {
+    .Call(`_VCGSS_vcm_cpp`, Y, X, settings, init, var_gp)
+}
+
