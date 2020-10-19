@@ -2,7 +2,7 @@
 % Please edit documentation in R/SS_VCM.R
 \name{VCM_fct}
 \alias{VCM_fct}
-\title{Main function to run the varying coefficient model using spike-and-slab prior for variable selection}
+\title{Main function to run the Bayesian varying coefficient model using spike-and-slab prior for variable selection}
 \usage{
 VCM_fct(
   Y,
@@ -26,13 +26,13 @@ VCM_fct(
 )
 }
 \arguments{
-\item{Y}{n x T matrix of phenotypic observation (n is the number of individuals, T is the number of observed time points)}
+\item{Y}{n x T matrix of phenotypic observations (n is the number of individuals, T is the number of observed time points)}
 
-\item{X}{n x q matrix of variables (markers), q id the number of variables}
+\item{X}{n x q matrix of variables (markers), q is the number of variables}
 
-\item{ENV}{n x ne matrix of environmental variables, ne is the number of environmental varialbes}
+\item{ENV}{n x ne matrix of environmental variables, ne is the number of environmental variables}
 
-\item{selection}{boolean indicating if selection is needed, the default is TRUE}
+\item{selection}{boolean indicating if selection is requiered, the default is TRUE}
 
 \item{interpolation}{character, indicating the approach used to estimate curve of the effects. Possible choise is c('Legendre', 'B-spline', 'P-spline', 'RW'), the default is 'P-spline'.}
 
@@ -40,17 +40,17 @@ VCM_fct(
 
 \item{order_diff}{interger in [1, 2, 3], order of the difference penalty, the default is 2.}
 
-\item{niter}{number of iteration of the MCMC chain, the default is 10000}
+\item{niter}{number of iterations of the MCMC chain, the default is 10000}
 
 \item{burnin}{number of initial iterations of the MCMC chain which should be discarded, the defaults to 5000}
 
 \item{thin}{save only every thin-th iteration, the default is 10}
 
-\item{rep}{number of repetition, the default is one}
+\item{rep}{number of repetitions, the default is one}
 
 \item{cores}{number of cores for parallelisation, the default is -1 indicating that all cores minus 1 are used.}
 
-\item{save}{boolean indicating if the MCMC chains should me saved, the default is true}
+\item{save}{boolean indicating if the MCMC chains should me saved, the default is TRUE}
 
 \item{path}{optional (existing) path to save the MCMC chains if save = TRUE, if NULL, path = Fused_HS if selection = TRUE, Fusion_HS ortherwise}
 
@@ -68,5 +68,5 @@ VCM_fct(
 Return a list
 }
 \description{
-Main function to run the varying coefficient model using spike-and-slab prior for variable selection
+Main function to run the Bayesian varying coefficient model using spike-and-slab prior for variable selection
 }

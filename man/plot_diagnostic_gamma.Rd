@@ -2,7 +2,7 @@
 % Please edit documentation in R/SS_VCM.R
 \name{plot_diagnostic_gamma}
 \alias{plot_diagnostic_gamma}
-\title{Function to plot visual convergence diagnostic of variable marginal posterior inclusion probabilities}
+\title{Function to plot convergence diagnostic of variable marginal posterior inclusion probabilities}
 \usage{
 plot_diagnostic_gamma(object)
 }
@@ -13,5 +13,5 @@ plot_diagnostic_gamma(object)
 none
 }
 \description{
-Function to plot visual convergence diagnostic of variable marginal posterior inclusion probabilities
+Function to plot convergence diagnostic of variable marginal posterior inclusion probabilities
 }
