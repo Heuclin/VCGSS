@@ -85,6 +85,7 @@ ss_vcm <- function(Y, X, settings, init, selection = TRUE, var_gp = "global")
 #' @export
 #'
 #' @examples # R/example_1.R
+#'
 VCM_fct <- function(Y, X, ENV = NULL, selection = TRUE, interpolation='P-spline', df = floor(ncol(Y)/3)+3,  
                     order_diff = 2, niter = 10000, burnin = 5000, thin = 10,
                     rep = 1, cores = -1, save = TRUE, path = NULL, 
