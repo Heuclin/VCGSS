@@ -8,6 +8,7 @@ Description: This R package implements the Bayesian varying coefficient model pr
 License: GPL-3
 Encoding: UTF-8
 LazyData: true
+Depends: R (>= 3.6.1)
 URL: https://github.com/Heuclin/VCGSS
 BugReports: https://github.com/Heuclin/VCGSS/issues
 Imports: 

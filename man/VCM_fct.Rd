@@ -77,5 +77,6 @@ Return a list
 Main function to run the Bayesian varying coefficient model using spike-and-slab prior for variable selection
 }
 \examples{
-# R/exemple_1.R
+# R/example_1.R
+
 }
