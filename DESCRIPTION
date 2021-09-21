@@ -1,0 +1,25 @@
+Package: VCGSS
+Type: Package
+Title: Bayesian varying coefficient model with selection using group spike-and-slab prior
+Version: 0.1.0
+Author: B. Heuclin, F. Mortier, C. Trottier, M. Denis
+Maintainer: The package maintainer <benjamin.heuclin@gmail.com>
+Description: This R package implements the Bayesian varying coefficient model proposed in Heuclin et al. (2020). This model allows, in a single step, the identification of variables involved in the variability of numerical response variable and the estimation of their dynamic effects. Variable selection is achieved using a group spike-and-slab priors with either  P-spline interpolation  or  non-functional techniques to model the dynamic effects.
+License: GPL-3
+Encoding: UTF-8
+LazyData: true
+Depends: R (>= 3.6.1)
+URL: https://github.com/Heuclin/VCGSS
+BugReports: https://github.com/Heuclin/VCGSS/issues
+Imports: 
+	Rcpp (>= 1.0.4.6),
+	stringr,
+	mvnfast,
+	splines,
+	invgamma,
+	doParallel,
+	coda, 
+	rlang,
+	utils
+LinkingTo: Rcpp, RcppArmadillo
+RoxygenNote: 7.1.2
