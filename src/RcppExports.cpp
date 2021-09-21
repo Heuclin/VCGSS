@@ -11,15 +11,15 @@ Rcpp::Rostream<true>&  Rcpp::Rcout = Rcpp::Rcpp_cout_get();
 Rcpp::Rostream<false>& Rcpp::Rcerr = Rcpp::Rcpp_cerr_get();
 #endif
 
-// my_sample
-IntegerVector my_sample(IntegerVector A, int n);
-RcppExport SEXP _VCGSS_my_sample(SEXP ASEXP, SEXP nSEXP) {
+// mySample
+IntegerVector mySample(IntegerVector A, int n);
+RcppExport SEXP _VCGSS_mySample(SEXP ASEXP, SEXP nSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
     Rcpp::traits::input_parameter< IntegerVector >::type A(ASEXP);
     Rcpp::traits::input_parameter< int >::type n(nSEXP);
-    rcpp_result_gen = Rcpp::wrap(my_sample(A, n));
+    rcpp_result_gen = Rcpp::wrap(mySample(A, n));
     return rcpp_result_gen;
 END_RCPP
 }
@@ -71,9 +71,9 @@ BEGIN_RCPP
     return rcpp_result_gen;
 END_RCPP
 }
-// rmnorm_svd
-arma::vec rmnorm_svd(arma::vec r, arma::vec mean, arma::mat V, arma::vec s);
-RcppExport SEXP _VCGSS_rmnorm_svd(SEXP rSEXP, SEXP meanSEXP, SEXP VSEXP, SEXP sSEXP) {
+// rmnormSvd
+arma::vec rmnormSvd(arma::vec r, arma::vec mean, arma::mat V, arma::vec s);
+RcppExport SEXP _VCGSS_rmnormSvd(SEXP rSEXP, SEXP meanSEXP, SEXP VSEXP, SEXP sSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
@@ -81,47 +81,33 @@ BEGIN_RCPP
     Rcpp::traits::input_parameter< arma::vec >::type mean(meanSEXP);
     Rcpp::traits::input_parameter< arma::mat >::type V(VSEXP);
     Rcpp::traits::input_parameter< arma::vec >::type s(sSEXP);
-    rcpp_result_gen = Rcpp::wrap(rmnorm_svd(r, mean, V, s));
+    rcpp_result_gen = Rcpp::wrap(rmnormSvd(r, mean, V, s));
     return rcpp_result_gen;
 END_RCPP
 }
-// rmnorm_svd2
-arma::vec rmnorm_svd2(arma::vec mean, arma::mat V, arma::vec s);
-RcppExport SEXP _VCGSS_rmnorm_svd2(SEXP meanSEXP, SEXP VSEXP, SEXP sSEXP) {
+// rmnormSvd2
+arma::vec rmnormSvd2(arma::vec mean, arma::mat V, arma::vec s);
+RcppExport SEXP _VCGSS_rmnormSvd2(SEXP meanSEXP, SEXP VSEXP, SEXP sSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
     Rcpp::traits::input_parameter< arma::vec >::type mean(meanSEXP);
     Rcpp::traits::input_parameter< arma::mat >::type V(VSEXP);
     Rcpp::traits::input_parameter< arma::vec >::type s(sSEXP);
-    rcpp_result_gen = Rcpp::wrap(rmnorm_svd2(mean, V, s));
+    rcpp_result_gen = Rcpp::wrap(rmnormSvd2(mean, V, s));
     return rcpp_result_gen;
 END_RCPP
 }
-// gl_vcm_cpp
-List gl_vcm_cpp(arma::mat Y, arma::mat X, List settings, List init);
-RcppExport SEXP _VCGSS_gl_vcm_cpp(SEXP YSEXP, SEXP XSEXP, SEXP settingsSEXP, SEXP initSEXP) {
-BEGIN_RCPP
-    Rcpp::RObject rcpp_result_gen;
-    Rcpp::RNGScope rcpp_rngScope_gen;
-    Rcpp::traits::input_parameter< arma::mat >::type Y(YSEXP);
-    Rcpp::traits::input_parameter< arma::mat >::type X(XSEXP);
-    Rcpp::traits::input_parameter< List >::type settings(settingsSEXP);
-    Rcpp::traits::input_parameter< List >::type init(initSEXP);
-    rcpp_result_gen = Rcpp::wrap(gl_vcm_cpp(Y, X, settings, init));
-    return rcpp_result_gen;
-END_RCPP
-}
-// sample_int
-Rcpp::IntegerVector sample_int(int n, int min, int max);
-RcppExport SEXP _VCGSS_sample_int(SEXP nSEXP, SEXP minSEXP, SEXP maxSEXP) {
+// sampleInt
+Rcpp::IntegerVector sampleInt(int n, int min, int max);
+RcppExport SEXP _VCGSS_sampleInt(SEXP nSEXP, SEXP minSEXP, SEXP maxSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
     Rcpp::traits::input_parameter< int >::type n(nSEXP);
     Rcpp::traits::input_parameter< int >::type min(minSEXP);
     Rcpp::traits::input_parameter< int >::type max(maxSEXP);
-    rcpp_result_gen = Rcpp::wrap(sample_int(n, min, max));
+    rcpp_result_gen = Rcpp::wrap(sampleInt(n, min, max));
     return rcpp_result_gen;
 END_RCPP
 }
@@ -137,9 +123,9 @@ BEGIN_RCPP
     return rcpp_result_gen;
 END_RCPP
 }
-// ss_vcm_cpp
-List ss_vcm_cpp(arma::mat Y, arma::mat X, List settings, List init, std::string var_gp);
-RcppExport SEXP _VCGSS_ss_vcm_cpp(SEXP YSEXP, SEXP XSEXP, SEXP settingsSEXP, SEXP initSEXP, SEXP var_gpSEXP) {
+// ssVcmCpp
+List ssVcmCpp(arma::mat Y, arma::mat X, List settings, List init, std::string var_gp);
+RcppExport SEXP _VCGSS_ssVcmCpp(SEXP YSEXP, SEXP XSEXP, SEXP settingsSEXP, SEXP initSEXP, SEXP var_gpSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
@@ -148,13 +134,13 @@ BEGIN_RCPP
     Rcpp::traits::input_parameter< List >::type settings(settingsSEXP);
     Rcpp::traits::input_parameter< List >::type init(initSEXP);
     Rcpp::traits::input_parameter< std::string >::type var_gp(var_gpSEXP);
-    rcpp_result_gen = Rcpp::wrap(ss_vcm_cpp(Y, X, settings, init, var_gp));
+    rcpp_result_gen = Rcpp::wrap(ssVcmCpp(Y, X, settings, init, var_gp));
     return rcpp_result_gen;
 END_RCPP
 }
-// ss_vcm_without_rho_cpp
-List ss_vcm_without_rho_cpp(arma::mat Y, arma::mat X, List settings, List init, std::string var_gp);
-RcppExport SEXP _VCGSS_ss_vcm_without_rho_cpp(SEXP YSEXP, SEXP XSEXP, SEXP settingsSEXP, SEXP initSEXP, SEXP var_gpSEXP) {
+// vcmCpp
+List vcmCpp(arma::mat Y, arma::mat X, List settings, List init, std::string var_gp);
+RcppExport SEXP _VCGSS_vcmCpp(SEXP YSEXP, SEXP XSEXP, SEXP settingsSEXP, SEXP initSEXP, SEXP var_gpSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
@@ -163,40 +149,23 @@ BEGIN_RCPP
     Rcpp::traits::input_parameter< List >::type settings(settingsSEXP);
     Rcpp::traits::input_parameter< List >::type init(initSEXP);
     Rcpp::traits::input_parameter< std::string >::type var_gp(var_gpSEXP);
-    rcpp_result_gen = Rcpp::wrap(ss_vcm_without_rho_cpp(Y, X, settings, init, var_gp));
-    return rcpp_result_gen;
-END_RCPP
-}
-// vcm_cpp
-List vcm_cpp(arma::mat Y, arma::mat X, List settings, List init, std::string var_gp);
-RcppExport SEXP _VCGSS_vcm_cpp(SEXP YSEXP, SEXP XSEXP, SEXP settingsSEXP, SEXP initSEXP, SEXP var_gpSEXP) {
-BEGIN_RCPP
-    Rcpp::RObject rcpp_result_gen;
-    Rcpp::RNGScope rcpp_rngScope_gen;
-    Rcpp::traits::input_parameter< arma::mat >::type Y(YSEXP);
-    Rcpp::traits::input_parameter< arma::mat >::type X(XSEXP);
-    Rcpp::traits::input_parameter< List >::type settings(settingsSEXP);
-    Rcpp::traits::input_parameter< List >::type init(initSEXP);
-    Rcpp::traits::input_parameter< std::string >::type var_gp(var_gpSEXP);
-    rcpp_result_gen = Rcpp::wrap(vcm_cpp(Y, X, settings, init, var_gp));
+    rcpp_result_gen = Rcpp::wrap(vcmCpp(Y, X, settings, init, var_gp));
     return rcpp_result_gen;
 END_RCPP
 }
 
 static const R_CallMethodDef CallEntries[] = {
-    {"_VCGSS_my_sample", (DL_FUNC) &_VCGSS_my_sample, 2},
+    {"_VCGSS_mySample", (DL_FUNC) &_VCGSS_mySample, 2},
     {"_VCGSS_rInvGauss", (DL_FUNC) &_VCGSS_rInvGauss, 2},
     {"_VCGSS_mmax", (DL_FUNC) &_VCGSS_mmax, 2},
     {"_VCGSS_mmin", (DL_FUNC) &_VCGSS_mmin, 2},
     {"_VCGSS_rmnorm", (DL_FUNC) &_VCGSS_rmnorm, 2},
-    {"_VCGSS_rmnorm_svd", (DL_FUNC) &_VCGSS_rmnorm_svd, 4},
-    {"_VCGSS_rmnorm_svd2", (DL_FUNC) &_VCGSS_rmnorm_svd2, 3},
-    {"_VCGSS_gl_vcm_cpp", (DL_FUNC) &_VCGSS_gl_vcm_cpp, 4},
-    {"_VCGSS_sample_int", (DL_FUNC) &_VCGSS_sample_int, 3},
+    {"_VCGSS_rmnormSvd", (DL_FUNC) &_VCGSS_rmnormSvd, 4},
+    {"_VCGSS_rmnormSvd2", (DL_FUNC) &_VCGSS_rmnormSvd2, 3},
+    {"_VCGSS_sampleInt", (DL_FUNC) &_VCGSS_sampleInt, 3},
     {"_VCGSS_sumlogs", (DL_FUNC) &_VCGSS_sumlogs, 2},
-    {"_VCGSS_ss_vcm_cpp", (DL_FUNC) &_VCGSS_ss_vcm_cpp, 5},
-    {"_VCGSS_ss_vcm_without_rho_cpp", (DL_FUNC) &_VCGSS_ss_vcm_without_rho_cpp, 5},
-    {"_VCGSS_vcm_cpp", (DL_FUNC) &_VCGSS_vcm_cpp, 5},
+    {"_VCGSS_ssVcmCpp", (DL_FUNC) &_VCGSS_ssVcmCpp, 5},
+    {"_VCGSS_vcmCpp", (DL_FUNC) &_VCGSS_vcmCpp, 5},
     {NULL, NULL, 0}
 };
 

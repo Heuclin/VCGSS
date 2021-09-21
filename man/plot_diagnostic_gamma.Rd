@@ -16,9 +16,9 @@ none
 Function to plot convergence diagnostic of variable marginal posterior inclusion probabilities
 }
 \examples{
-
-
-
+# 
+# 
+# 
 # n <- 50                      # number of individuals
 # q <- 20                      # number of variables
 # T <- 20                       # number of time points
@@ -147,9 +147,9 @@ Function to plot convergence diagnostic of variable marginal posterior inclusion
 # 
 # #### Visualisation of the estimated dynamic effects over time
 # plot_functional_effects(fit, plot=c("Y", "mu", "env", "beta"), mfrow = c(3, 3), add = c("matplot", "quantile"))
-
-
-
-
-
+# 
+# 
+# 
+# 
+# 
 }

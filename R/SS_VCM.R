@@ -49,9 +49,9 @@ prob_jointe <- function(tab, start, end){
 ss_vcm <- function(Y, X, settings, init, selection = TRUE, var_gp = "global")
 {
   if(selection){
-    ss_vcm_cpp(as.matrix(Y), as.matrix(X), as.list(settings), as.list(init), var_gp = var_gp)
+    ssVcmCpp(as.matrix(Y), as.matrix(X), as.list(settings), as.list(init), var_gp = var_gp)
   }else{
-    vcm_cpp(as.matrix(Y), as.matrix(X), as.list(settings), as.list(init), var_gp = var_gp)
+    vcmCpp(as.matrix(Y), as.matrix(X), as.list(settings), as.list(init), var_gp = var_gp)
   }
 }
 
@@ -248,10 +248,11 @@ VCM_fct <- function(Y, X, ENV = NULL, selection = TRUE, interpolation='P-spline'
 
   # MCMC _____________________________________________________________________________
   print("MCMC sampler")
+  
+  # list_chain <- list()
+  # for(k in 1:nrow(pars)){
 
-
-
-  list_chain <- foreach::foreach(k = 1:nrow(pars), .verbose = FALSE, .export = c("ss_vcm_cpp", "vcm_cpp")) %dopar% {
+  list_chain <- foreach::foreach(k = 1:nrow(pars), .verbose = FALSE, .export = c("ss_vcm_cpp", "vcm_cpp", "ss_vcm")) %dopar% {
     init <- list()
     init$alpha <- stats::rnorm(1, 0, 3)
     init$pi = stats::runif(1, 0.001, 0.99)
@@ -280,17 +281,20 @@ VCM_fct <- function(Y, X, ENV = NULL, selection = TRUE, interpolation='P-spline'
     # init$tau0_e <- rep(100, settings$n_env)
     # init$xi <- matrix(1, nrow(settings$D), q)
 
-    chain <- ss_vcm(Y = Y, X = X, settings = settings, init = init, selection = selection)
+    # chain <- ss_vcm(Y = Y, X = X, settings = settings, init = init, selection = selection)
 
-    # if(selection){
-    #   chain <- ss_vcm_cpp(as.matrix(Y), as.matrix(X), as.list(settings), as.list(init), var_gp = "global")
-    # }else{
-    #   chain <- vcm_cpp(as.matrix(Y), as.matrix(X), as.list(settings), as.list(init), var_gp = "global")
-    # }
+    # browser()
+    
+    if(selection){
+      chain <- ssVcmCpp(as.matrix(Y), as.matrix(X), as.list(settings), as.list(init), var_gp = "global")
+    }else{
+      chain <- vcmCpp(as.matrix(Y), as.matrix(X), as.list(settings), as.list(init), var_gp = "global")
+    }
 
     if(save) save(chain, settings, init, file = paste0(path, "/chain_rep_", k, ".Rdata"))
 
     if(save) return() else return(chain)
+    # list_chain[[k]] <- chain
   }
 
   if(!save) {output$list_chain <- list_chain ; rm(list_chain)}

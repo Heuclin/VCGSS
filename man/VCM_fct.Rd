@@ -77,9 +77,9 @@ Return a list
 Main function to run the Bayesian varying coefficient model using spike-and-slab prior for variable selection
 }
 \examples{
-
-
-
+# 
+# 
+# 
 # n <- 50                      # number of individuals
 # q <- 20                      # number of variables
 # T <- 20                       # number of time points
@@ -208,9 +208,9 @@ Main function to run the Bayesian varying coefficient model using spike-and-slab
 # 
 # #### Visualisation of the estimated dynamic effects over time
 # plot_functional_effects(fit, plot=c("Y", "mu", "env", "beta"), mfrow = c(3, 3), add = c("matplot", "quantile"))
-
-
-
-
-
+# 
+# 
+# 
+# 
+# 
 }
