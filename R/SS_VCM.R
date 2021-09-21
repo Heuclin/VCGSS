@@ -252,7 +252,7 @@ VCM_fct <- function(Y, X, ENV = NULL, selection = TRUE, interpolation='P-spline'
   # list_chain <- list()
   # for(k in 1:nrow(pars)){
 
-  list_chain <- foreach::foreach(k = 1:nrow(pars), .verbose = FALSE, .export = c("ss_vcm_cpp", "vcm_cpp", "ss_vcm")) %dopar% {
+  list_chain <- foreach::foreach(k = 1:nrow(pars), .verbose = FALSE) %dopar% {
     init <- list()
     init$alpha <- stats::rnorm(1, 0, 3)
     init$pi = stats::runif(1, 0.001, 0.99)
