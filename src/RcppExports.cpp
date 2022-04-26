@@ -6,6 +6,11 @@
 
 using namespace Rcpp;
 
+#ifdef RCPP_USE_GLOBAL_ROSTREAM
+Rcpp::Rostream<true>&  Rcpp::Rcout = Rcpp::Rcpp_cout_get();
+Rcpp::Rostream<false>& Rcpp::Rcerr = Rcpp::Rcpp_cerr_get();
+#endif
+
 // my_sample
 IntegerVector my_sample(IntegerVector A, int n);
 RcppExport SEXP _VCGSS_my_sample(SEXP ASEXP, SEXP nSEXP) {
