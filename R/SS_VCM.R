@@ -272,9 +272,9 @@ VCM_fct <- function(Y, X, ENV = NULL, selection = TRUE, interpolation='P-spline'
     init$g <- sample(c(0, 1), q, replace = TRUE, prob=c(1-init$pi, init$pi))# parametre gamma pour le Spike and Slab
     init$m <- stats::rnorm(settings$l-1, 0, 1)
     init$e <- matrix(stats::rnorm( settings$l-1*settings$n_env, 0, 0.8), settings$l-1, settings$n_env)
-    # init$b <- matrix(0, ncol(settings$B), q)
-    init$b <- matrix(stats::rnorm( ncol(settings$B)*q, 0, 0.8), ncol(settings$B), q)
-    init$b = t(t(init$b) * init$g)
+    init$b <- matrix(0, ncol(settings$B), q)
+    # init$b <- matrix(stats::rnorm( ncol(settings$B)*q, 0, 0.8), ncol(settings$B), q)
+    # init$b = t(t(init$b) * init$g)
     init$rho <- stats::runif(1, 0.001, 0.99)            # rho, parametre auto-regressif sur la matrice de variance residuelle
     init$se2 <- abs(stats::rnorm(1, 1, 3))		           # sigma^2, variance residuelle, scalaire
     init$tau2 <- rep(100, q)    # tau2, paramètres de groupe lasso, vecteur de longueur q
