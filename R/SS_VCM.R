@@ -254,36 +254,33 @@ VCM_fct <- function(Y, X, ENV = NULL, selection = TRUE, interpolation='P-spline'
 
   list_chain <- foreach::foreach(k = 1:nrow(pars), .verbose = FALSE) %dopar% {
     init <- list()
-    init$alpha <- stats::rnorm(1, 0, 3)
-    init$pi = stats::runif(1, 0.001, 0.99)
-    init$m <- stats::rnorm(settings$l-1, 0, 1)
-    init$e <- matrix(0, settings$l-1, settings$n_env)
-    init$b <- matrix(stats::rnorm( ncol(settings$B)*q, 0, 1), ncol(settings$B), q)
-    init$rho <- stats::runif(1, 0.001, 0.99)            # rho, parametre auto-regressif sur la matrice de variance residuelle
-    init$se2 <- abs(stats::rnorm(1, 1, 3))		           # sigma^2, variance residuelle, scalaire
-    init$g <- rep(1, q) # sample(0:1, q, replace = TRUE);       # parametre gamma pour le Spike and Slab
-    init$tau2 <- rep(100, q)    # tau2, parametres de groupe lasso, vecteur de longueur q
-    init$tau0 <- 100
-    init$tau0_e <- rep(100, settings$n_env)
-    init$xi <- matrix(1, nrow(settings$D), q)
-
-    # init <- list()
-    # init$alpha <- 0
-    # init$pi = 0.5
-    # init$m <- rep(0, settings$l-1)
+    # init$alpha <- stats::rnorm(1, 0, 3)
+    # init$pi = stats::runif(1, 0.001, 0.99)
+    # init$m <- stats::rnorm(settings$l-1, 0, 1)
     # init$e <- matrix(0, settings$l-1, settings$n_env)
-    # init$b <- matrix(0, ncol(settings$B), q)
+    # init$b <- matrix(stats::rnorm( ncol(settings$B)*q, 0, 1), ncol(settings$B), q)
+    # init$rho <- stats::runif(1, 0.001, 0.99)            # rho, parametre auto-regressif sur la matrice de variance residuelle
+    # init$se2 <- abs(stats::rnorm(1, 1, 3))		           # sigma^2, variance residuelle, scalaire
+    # init$g <- rep(1, q) # sample(0:1, q, replace = TRUE);       # parametre gamma pour le Spike and Slab
     # init$tau2 <- rep(100, q)    # tau2, parametres de groupe lasso, vecteur de longueur q
-    # init$rho <- 0.5            # rho, parametre auto-regressif sur la matrice de variance residuelle
-    # init$se2 <- 5		           # sigma^2, variance residuelle, scalaire
-    # init$g <- rep(1, q);       # parametre gamma pour le Spike and Slab
     # init$tau0 <- 100
     # init$tau0_e <- rep(100, settings$n_env)
     # init$xi <- matrix(1, nrow(settings$D), q)
 
-    # chain <- ss_vcm(Y = Y, X = X, settings = settings, init = init, selection = selection)
-
-    # browser()
+    init$alpha <- mean(as.matrix(Y))
+    init$pi = stats::runif(1, 0.001, 0.2)
+    init$g <- sample(c(0, 1), q, replace = TRUE, prob=c(1-init$pi, init$pi))# parametre gamma pour le Spike and Slab
+    init$m <- stats::rnorm(settings$l-1, 0, 1)
+    init$e <- matrix(stats::rnorm( settings$l-1*settings$n_env, 0, 0.8), settings$l-1, settings$n_env)
+    # init$b <- matrix(0, ncol(settings$B), q)
+    init$b <- matrix(stats::rnorm( ncol(settings$B)*q, 0, 0.8), ncol(settings$B), q)
+    init$b = t(t(init$b) * init$g)
+    init$rho <- stats::runif(1, 0.001, 0.99)            # rho, parametre auto-regressif sur la matrice de variance residuelle
+    init$se2 <- abs(stats::rnorm(1, 1, 3))		           # sigma^2, variance residuelle, scalaire
+    init$tau2 <- rep(100, q)    # tau2, paramètres de groupe lasso, vecteur de longueur q
+    init$tau0 <- 100
+    init$tau0_e <- rep(100, settings$n_env)
+    init$xi <- matrix(1, nrow(settings$D), q)
     
     if(selection){
       chain <- ssVcmCpp(as.matrix(Y), as.matrix(X), as.list(settings), as.list(init), var_gp = "global")
