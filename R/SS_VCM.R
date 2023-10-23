@@ -151,6 +151,7 @@ VCM_fct <- function(Y, X, ENV = NULL, selection = TRUE, interpolation='P-spline'
   output$data$X <- X
   output$data$ENV <- ENV
 
+  output$parameters$selection <- selection
   output$parameters$n <- n
   output$parameters$q <- q
   output$parameters$T <- T
@@ -337,7 +338,6 @@ VCM_fct <- function(Y, X, ENV = NULL, selection = TRUE, interpolation='P-spline'
 #' @examples
 gelman.diag.VCM <- function(object, gelman.plot = FALSE, traceplot = FALSE){
   require(coda)
-
   rep <- object$parameters$rep
   df_beta <- object$parameters$df_beta
   df_mu <- df_env <- object$parameters$df_mu
@@ -345,7 +345,7 @@ gelman.diag.VCM <- function(object, gelman.plot = FALSE, traceplot = FALSE){
   ENV <- object$data$ENV
   path <- object$parameters$path
   save <- object$parameters$save
-
+  
   print("Gelman diagnostic")
   mcmc_list_chain <- b <- m <- e <-  list()
   for(i in 1:q){
@@ -358,18 +358,22 @@ gelman.diag.VCM <- function(object, gelman.plot = FALSE, traceplot = FALSE){
     if(save) load(paste0(path, "/chain_rep_", k, ".Rdata")) else chain <- object$list_chain[[k]]
     prob <- colMeans(chain$g)
     g <- cbind(g, prob)
-
+    
     for(i in 1:q) for(j in 1:df_beta) if(prob[i]>0.5) b[[i]][[j]][[k]] <- coda::mcmc(chain$b[, j, i])
-
+    
     tmp2 <-tmp3 <-  NULL
     tmp <- do.call(cbind, chain[c("alpha", "m")]); colnames(tmp) <- c("alpha", paste0("m", 1:(df_mu)))
     if(!is.null(ENV)) {for(i in 1:ncol(ENV)) tmp2 <- cbind(tmp2, chain$e[, , i]); colnames(tmp2) <-  paste0("e", 1:((df_env)*ncol(ENV)))}
-    tmp3 <- do.call(cbind, chain[c("pi", "rho", "se2")]); colnames(tmp3) <- c("pi", "rho", "se2")
+    if(object$parameters$selection){
+      tmp3 <- do.call(cbind, chain[c("pi", "rho", "se2")]); colnames(tmp3) <- c("pi", "rho", "se2")
+    }else{
+      tmp3 <- do.call(cbind, chain[c("rho", "se2")]); colnames(tmp3) <- c("rho", "se2")
+    }
     mcmc_list_chain[[k]] <- coda::mcmc(cbind(tmp, tmp2, tmp3)) #, thin = thinin, start = burnin+1, end = niter)
   }
   object$mcmc_list <- coda::mcmc.list(mcmc_list_chain); rm(mcmc_list_chain)
-  object$gelman.diag <- coda::gelman.diag(object$mcmc_list)
-  print((object$gelman.diag))
+  object$gelman.diag <- coda::gelman.diag(object$mcmc_list, multivariate = FALSE)
+  # print((object$gelman.diag))
   # graphics::plot(object$gelman.diag$psrf[, 1], ylab="psrf", xlab= "parameters")
   print("Summary of the Gelman diagnostic:")
   print(summary(object$gelman.diag$psrf))
@@ -377,13 +381,13 @@ gelman.diag.VCM <- function(object, gelman.plot = FALSE, traceplot = FALSE){
   print(object$gelman.diag$mpsrf)
   if(gelman.plot) coda::gelman.plot(object$mcmc_list)
   if(traceplot) plot(object$mcmc_list)
-
+  
   # graphics::par(mfrow = c(1, 1), mar = c(4, 4, 1, 1))
   # graphics::matplot(apply(g, 1, cumsum)/ 1:rep, t="l", lty = 1, lwd = 2, xlab = "number of repetitions", ylab = "average marg. prob.", ylim = c(0, 1))
   # # dim(g)
   prob <- rowMeans(g)
-
-
+  
+  
   gelman_diag_b <- matrix(NA, q, df_beta)
   for(i in 1:q){
     # if(prob[i] > 0.1)
@@ -397,7 +401,6 @@ gelman.diag.VCM <- function(object, gelman.plot = FALSE, traceplot = FALSE){
   if(sum(!is.na(tmp))) graphics::plot(object$gelman.diag.b.psrf.median, ylab = "median of psrf", xlab = "variables", main = "psrf of parameters 'b'"); graphics::abline(1.1, 0, col = 2)
   return(object)
 }
-
 
 #___________________________________________________________________________________________________________________
 
